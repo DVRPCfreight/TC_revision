@@ -452,51 +452,52 @@ function init() {
     //Traffic counts
     // counts = new esri.layers.FeatureLayer("http://arcgis.dvrpc.org/arcgis/rest/services/Transportation/TrafficCounts/MapServer/0");
     
-    // counts = new esri.layers.ArcGISDynamicMapServiceLayer(
-    //     "http://arcgis.dvrpc.org/arcgis/rest/services/Transportation/TrafficCounts/MapServer/"
-    //     // "http://gis.dvrpc.org/ArcGIS/rest/services/DVRPC_Traffic_Counts/MapServer"
-    // );
-    // // map.addLayer(counts);
-    // // counts.setVisibleLayers([2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17]);
-    // counts.setVisibleLayers([0]);
-
-    var countsUrl = "http://arcgis.dvrpc.org/arcgis/rest/services/Transportation/TrafficCounts/MapServer/";
-    counts = new esri.layers.ArcGISDynamicMapServiceLayer("http://arcgis.dvrpc.org/arcgis/rest/services/Transportation/TrafficCounts/MapServer/", {
-      "id": "counts",
-      "opacity": 1
-    });
+    counts = new esri.layers.ArcGISDynamicMapServiceLayer(
+        "http://arcgis.dvrpc.org/arcgis/rest/services/Transportation/TrafficCounts/MapServer/"
+        // "http://gis.dvrpc.org/ArcGIS/rest/services/DVRPC_Traffic_Counts/MapServer"
+    );
+    map.addLayer(counts);
+    // counts.setVisibleLayers([2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17]);
     counts.setVisibleLayers([0]);
 
-    var defaultOutline = {"color": new dojo.Color([255,255,255]),"width": 1 ,"type": 'esriSLS',
-      "style":'esriSLSSolid'};
-    // esri.config.defaults.proxyURL = "http://arcgis.dvrpc.org/arcgis/proxy.ashx"
-    var defaultSymbol = new esri.symbol.SimpleFillSymbol({
-      "color" : new dojo.Color([155, 0, 196]),
-      "outline": defaultOutline,
-      "type": 'esriSLS',
-      "style":'esriSLSSolid' 
-      } );
-    var symbolsss = {
-      'type': 'simple',
-      'symbol': {
-        "size": 6,
-        "xoffset":0,
-        "yoffset":0,
-        "type": 'esriSMS',
-        "style": 'esriSMSCircle',
-        "color" : new dojo.Color([255, 255, 51]),
-        "outline": defaultOutline,
-      }
-    };
+    // var countsUrl = "http://arcgis.dvrpc.org/arcgis/rest/services/Transportation/TrafficCounts/MapServer/";
+    // counts = new esri.layers.ArcGISDynamicMapServiceLayer("http://arcgis.dvrpc.org/arcgis/rest/services/Transportation/TrafficCounts/MapServer/", {
+    //   "id": "counts",
+    //   "opacity": 1
+    // });
+    // counts.setVisibleLayers([0]);
+
+    // var defaultOutline = {"color": new dojo.Color([255,255,255]),"width": 1 ,"type": 'esriSLS',
+    //   "style":'esriSLSSolid'};
+    // // esri.config.defaults.proxyURL = "http://arcgis.dvrpc.org/arcgis/proxy.ashx"
+    // var defaultSymbol = new esri.symbol.SimpleFillSymbol({
+    //   "color" : new dojo.Color([155, 0, 196]),
+    //   "outline": defaultOutline,
+    //   "type": 'esriSLS',
+    //   "style":'esriSLSSolid' 
+    //   } );
+    // var symbolsss = {
+    //   'type': 'simple',
+    //   'symbol': {
+    //     "size": 6,
+    //     "xoffset":0,
+    //     "yoffset":0,
+    //     "type": 'esriSMS',
+    //     "style": 'esriSMSCircle',
+    //     "color" : new dojo.Color([255, 255, 51]),
+    //     "outline": defaultOutline,
+    //   }
+    // };
     // .setStyle(esri.symbol.SimpleFillSymbol.STYLE_SOLID);
     //     defaultSymbol.setOutline(new esri.symbol.SimpleLineSymbol(esri.symbol.SimpleLineSymbol.STYLE_SOLID, new dojo.Color([255,0,0]), 2));
 
-    var renderer = new esri.renderer.SimpleRenderer(symbolsss);
+    // var renderer = new esri.renderer.SimpleRenderer(symbolsss);
 
     // var renderer = new esri.renderer.UniqueValueRenderer(symbolsss, "TYPE")
     
     //add symbol for each possible value
-    // renderer.addValue("Volume", new esri.symbol.SimpleFillSymbol({
+    // renderer.addValue("Volume", new esri.symbol.SimpleFillSymbol().setColor(new dojo.Color([155, 0, 196])));
+    // {
     //   "color" : new dojo.Color([155, 0, 196]),
     //   "outline": defaultOutline 
     //   } ));
@@ -525,17 +526,17 @@ function init() {
     //   "outline": defaultOutline 
     //   } ));
 
-    var optionsArray = [];
-    var drawingOptions = new esri.layers.LayerDrawingOptions();
-    drawingOptions.renderer = renderer;
-    optionsArray[0] = drawingOptions;
-    counts.setLayerDrawingOptions(optionsArray);
-    map.addLayer(counts);
+    // var optionsArray = [];
+    // var drawingOptions = new esri.layers.LayerDrawingOptions();
+    // drawingOptions.renderer = renderer;
+    // optionsArray[0] = drawingOptions;
+    // counts.setLayerDrawingOptions(optionsArray);
+    // map.addLayer(counts);
 
 
-    // dojo.connect(counts, "onError", function(error) {
-    //     alert("There was an issue loading the traffic counts, please refresh webpage thank you!");
-    // });
+    dojo.connect(counts, "onError", function(error) {
+        alert("There was an issue loading the traffic counts, please refresh webpage thank you!");
+    });
 
     //query task setup
     queryTask = new esri.tasks.QueryTask(
