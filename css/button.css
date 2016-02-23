@@ -1,0 +1,72 @@
+.button, .button:visited {
+  display: inline-block; 
+  padding: 5px 10px 6px; 
+  color: #fff; 
+  text-decoration: none;
+  -moz-border-radius: 6px; 
+  -webkit-border-radius: 6px;
+  -moz-box-shadow: 0 1px 3px rgba(0,0,0,0.6);
+  -webkit-box-shadow: 0 1px 3px rgba(0,0,0,0.6);
+  text-shadow: 0 -1px 1px rgba(0,0,0,0.25);
+  border-bottom: 1px solid rgba(0,0,0,0.25);
+  position: relative;
+  cursor: pointer;
+  font-family:"Arial";
+}
+
+.button:hover	{ background-color: #111; color: #fff; }
+.button:active{ top: 1px; }
+.button, .button:visited,
+
+.large.button, .large.button:visited {
+  font-size: 12px; 
+  font-weight: bold; 
+  padding: 4px 8px 4px;
+  margin-top: 8px;
+  margin-left: 3px;
+  float:right;
+}
+
+.darkblue.button, .darkblue.button:visited { background-color: #19528E; }
+.darkblue.button:hover{ background-color: #2575cf; }	
+
+.darkgrey.button, .darkgrey.button:visited { background-color: #5F5A59; }
+.darkgrey.button:hover{ background-color: #b9b7b7; }	
+
+.green.button, .green.button:visited {
+background-color:#DEDEDE;
+}
+
+.green.button {
+color:#424242;
+font-weight:400;
+}
+
+.basemapIcon{
+background-image:url(../images/Basemap16.png);
+background-repeat: no-repeat;
+width:16px;
+height:16px;
+
+}
+
+.basemapButton{
+ color:#fff !important;
+ }
+ 
+ .claro td.dijitMenuItemLabel {
+color:#000;
+font-family: Arial, Helvetica, sans-serif
+font-weight:500;
+}
+.dijitButtonNode {
+  border:none;
+}
+.claro .dijitComboBox .dijitButtonNode {
+    background-color: #EFEFEF;
+    background-image: none;
+    background-repeat: repeat-x;
+}
+.claro .dijitComboBoxOpenOnClickHover .dijitButtonNode, .claro .dijitComboBox .dijitDownArrowButtonHover {
+    background-color: #ABD6FF;
+}

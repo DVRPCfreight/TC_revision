@@ -1,0 +1,262 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" />
+
+    <title>DVRPC - Traffic Counts</title>
+
+    <link rel="stylesheet" type="text/css" href="http://serverapi.arcgisonline.com/jsapi/arcgis/2.6/js/dojo/dijit/themes/tundra/tundra.css"/>
+    <link rel="stylesheet" href="css/jquery-ui-1.7.2.custom.css"/>
+    <link rel="stylesheet" href="css/style.css"/>
+	<link rel="stylesheet" href="css/button.css"/>
+    <link rel="stylesheet" href="css/ui.jqgrid.css"/>
+	
+	<style>
+	.ui-dialog{
+	position: absolute;
+	overflow:hidden;
+	}
+	</style>
+
+    <script type="text/javascript" src="http://serverapi.arcgisonline.com/jsapi/arcgis/?v=2.6"></script>
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.2/jquery-ui.min.js"></script>
+    <script type="text/javascript" src="js/grid.locale-en.js"></script>
+    <script type="text/javascript" src="js/jquery.jqGrid.min.js"></script>
+    <script type="text/javascript" src="js/table2CSV.js"></script>
+    <script type="text/javascript" src="js/jquery.csv.js"></script>
+
+    <script type="text/javascript" src="js/script.js"></script>
+    <script type="text/javascript" src="js/jquery.jqGrid.fluid.js"></script>
+    <script type="text/javascript" src="js/jquery.jstree.js"></script>
+
+    	
+<script type="text/javascript">
+function clearText(field){
+
+    if (field.defaultValue == field.value) field.value = '';
+    else if (field.value == '') field.value = field.defaultValue;
+
+}
+</script>
+
+    <script type="text/javascript">
+      dojo.require("esri.map");
+      dojo.require("esri.tasks.identify");
+      dojo.require("esri.toolbars.navigation");
+      dojo.require("esri.toolbars.draw");
+      dojo.require("dijit.form.Button");
+      dojo.require("dijit.Toolbar");
+	  dojo.require("esri.tasks.locator");
+    </script>
+  </head>
+  
+  
+  
+  <body class="tundra">
+    <div id="application">
+   <!--    <img id="loadingImg" src="images/loading.gif"  style="display:none;position:fixed;top:45%;left:38%;margin-top:-90px;margin-left:-90px;z-index:100;" /> -->
+    <div id="header">
+      <a href="http://www.dvrpc.org"><img id="logo" src="images/dvrpc_logo.png"/></a>
+      <h1>Traffic Counts</h1>
+	  
+	 <span ><a href="javascript:openTab(0);void(0);" class="large button darkgrey" style="margin-right:20px">about</a></span>   
+	 <span ><a href="javascript:openTab2();void(0);" class="large button darkgrey" >how to use</a></span>
+	 
+	 <div id="buttons">
+	  <img id="imgLocateAddress" src="images/search.png" alt="" onclick="locate()" title="Search" style="width:20px; height:20px;cursor: pointer;margin:0px 0px 0px 5px;" />
+     </div>
+     <div id="locater">  
+	   <input type="text" id="address" size="28" title="Enter place or address" onFocus="clearText(this)" onBlur="clearText(this)" value="Enter place or address" />
+	  </div>
+
+
+    </div>
+	
+    <div id="body">
+      <div id="sidebar">
+	  <h3><a href="#"><B>Data Filter</B></a></h3>
+	<div>
+	  <!--<h4 class="plain">Filters results returned from the Select tool</h4>-->
+	  <ul class="plainlist">
+	    <li class="filter">
+	      <strong>Count year</strong> between...<br/>
+	      <input id="yearFilter1" class="filterinput" type="text"/>
+		and
+	      <input id="yearFilter2" class="filterinput" type="text"/>
+	      <input class="field" type="hidden" value="SETDATE"/>
+	      <input class="type" type="hidden" value="date"/>
+	    </li>
+
+	    <li class="filter">
+	    <strong>AADT</strong> between...<br/>
+	      <input id="aadtFilter1" class="filterinput" type="text"/>
+		and
+	      <input id="aadtFilter2" class="filterinput" type="text"/>
+	      <input class="field" type="hidden" value="AADT"/>
+	      <input class="type" type="hidden" value="num"/>
+	    </li>
+
+	    <li class="filter">
+	      <strong>Road Name</strong> is like...<br/>
+	      <input id="roadFilter" type="text"/>
+	      <input class="field" type="hidden" value="ROAD"/>
+	      <input class="type" type="hidden" value="text"/>
+	    </li>
+
+	    <li class="filter">
+	      <strong>Municipality</strong><br/>
+	      <input id="mcdFilter" type="text"/>
+	      <input class="field" type="hidden" value="MCD_NAME"/>
+	      <input class="type" type="hidden" value="text"/>
+	    </li>
+		
+		    <li class="filter">
+	      <strong>Type</strong><br/>
+		<!--<input id="typeFilter" type="text" />-->
+		  <select id="typeFilter">
+		  <option value="" selected="selected">Select One</option>
+		  <option>Volume</option>
+		  <option>Class</option>
+	      <option>Turning Movement</option>
+	      <option>15 min Volume</option>
+	      <option>Loop</option>
+	      <option>8 day</option>
+		  <option>Manual Class</option>
+		  </select>
+	      <input class="field" type="hidden" value="TYPE"/>  
+	      <input class="type" type="hidden" value="text"/>
+		  	    
+	    </li>
+		
+		  
+	  </ul>
+
+	  <a href="javascript:void(0);" class="buttons" id="queryLastExtent">Set filters</a>
+	  <a href="javascript:void(0);" class="buttons" id="clearInputs">Clear filters</a>
+	</div>
+	
+	<h3><a href="#"><B>Legend</B></a></h3>
+	<div id="legend">
+	<img src="images/volume.png" style="vertical-align:middle;margin-right:4px"/><span style=""><B>Volume</B> : The automated measurement of traffic volume collected and presented in hourly increments.</span><br><br>
+    <img src="images/15min.png" style="vertical-align:middle;margin-right:4px"/><span style=""><B>15 min Volume</B> : The automated measurement of traffic volume collected in 15 min. increment and presented in hourly increments.</span><br><br>
+	<img src="images/class.png" style="vertical-align:middle;margin-right:4px"/><span style=""><B>Class</B> : Automated measurement of traffic volume by vehicle class (type).</span><br><br>
+    <img src="images/manual.png" style="vertical-align:middle;margin-right:4px"/><span style=""><B>Manual Class</B> : Manual observation and measurement of traffic volume by vehicle class (type).</span><br><br>
+	<img src="images/turning.png" style="vertical-align:middle;margin-right:4px"/><span style=""><B>Turning Movement</B> : Manual observation and measurement of intersection turning movement volumes.</span><br><br>
+	<img src="images/loop.png" style="vertical-align:middle;margin-right:4px"/><span style=""><B>Loop</B> : Vehicle volume counts via fixed-location inductive-loop counters.</span><br><br>
+    <img src="images/8day.png" style="vertical-align:middle;margin-right:4px"/><span style=""><B>8 Day</B> : A week long volume count utilized by NJDOT.</span>
+	</div>
+	
+	 <h2><a href="#"><B>Zoom to a municipality</B></a></h2>  
+	  <div id="treeAccordion">
+	  	    <ul class="plainlist breakout">
+ <h4>- click <b>plus</b> <img src="images/plus.png"/> for a list of municipalities</h4>
+ </ul>
+  <br>
+	  <div id="tree"></div>
+	  </div> 
+	
+</div>
+	  
+      <div id="map-frame">
+	<div id="navToolbar"></div> 
+        <div id="map"></div>
+      </div>
+    </div>
+    <div id="footer">
+      <table id="results"></table>
+    </div>
+  </div>
+  
+    	  <!-- Dialog -->
+    <div id="dialog" title="DVRPC - Traffic Counts">
+    <div id="tabs">
+      <ul>
+          <li><a href="#tabs-1">About</a></li>
+		  <li><a href="#tabs-2">Contact Info</a></li>
+      </ul>
+	  
+      <div id="tabs-1">
+          <p>
+		Traffic count data on this website is provided as a public service. 
+		The data item "Annual Average Daily Traffic (AADT)" represents an estimate of all traffic during a 24 
+		hour period at the location indicated for the year in which it was collected.  
+		While every effort is made on the part of DVRPC to provide valid and current information, 
+		DVRPC makes no representation or warranties, express or implied, about the validity of this information 
+		and is not to be held responsible for errors in data obtained from this website.
+	  </p>
+	   - Click the map or use the select by rectangle tool <img id="legend" src="images/select.gif"/> to identify and 
+	   view selected traffic count information.
+      </div> 
+
+	  
+	<div id="tabs-2">
+	  <p>
+	 <b>Office of Travel Monitoring</b><br/>
+	   Scott Brady, Manager <br/>
+	    (215) 238-2814 <br/>
+	    <a href="mailto:sbrady@dvrpc.org">sbrady@dvrpc.org </a> <br/>
+	 <br/>
+	 Charles Henry, Traffic Counting Supervisor  <br/>
+	(215) 238-2895 <br/>
+	   <a href="mailto:chenry@dvrpc.org">chenry@dvrpc.org</a> <br/>
+	   <br/>
+	  <b>DVRPC Main Number:</b> (215) 592-1800
+	  </p>
+    </div>
+</div>
+</div>	
+	
+  <!-- End Dialog -->
+  
+  <!-- Start Dialog2 -->
+    <div id="dialog2" title="how to use">
+	<h4>Viewing Traffic Count Information:</h4>
+	<p>Click on the map or use the select by rectangle tool <img id="legend" src="images/select.gif"/> to identify and 
+	   view selected traffic count information.</p>
+	<P>Use the Data Filter to help query out select traffic count information.</P>   
+	
+		<h4>Map Navigation:</h4>
+<p>Click-and-drag on the map to pan, or use your mouse wheel to zoom in/out.  You may also use the slider bar and arrow controls to zoom in/out of the map.
+ Double-clicking on an area will also zoom in. If you hold down the <B>Shift Key </B>and drag a <Font color="red">box </Font>on the map, it will zoom into the area drawn. 
+</p>
+
+<p>Entering an address or location in the box at the top-right will zoom the map to that location.</p>
+
+<p>Click the <b>zoom to region</b> button to zoom to the initial map extent.</p> 
+
+
+
+	</div>	
+	  <!-- End Dialog2 -->
+  
+  <div id="popupDiv">
+	<p>For detailed report regarding Turning Movement and Manual Class traffic counts contact the Office of Travel Monitoring.
+	</p>
+	  <p>
+	 <b>Office of Travel Monitoring</b><br/>
+	   Scott Brady, Manager <br/>
+	    (215) 238-2814 <br/>
+	    <a href="mailto:sbrady@dvrpc.org">sbrady@dvrpc.org </a> <br/>
+	 <br/>
+	 Charles Henry, Traffic Counting Supervisor  <br/>
+	(215) 238-2895 <br/>
+	   <a href="mailto:chenry@dvrpc.org">chenry@dvrpc.org</a> <br/>
+	   <br/>
+	  <b>DVRPC Main Number:</b> (215) 592-1800
+	  </p>
+  </div>
+  
+  <!--Loading Panel-->
+<div id="loadingCon">
+<div id="loadingDialog">
+<div id="loadingHeader"></div>
+<div id="loading">Loading...</div>
+<img id="loadingImg" alt="" src="images/progressBar.gif">
+</div>
+</div> 	  
+  
+  </body>
+</html>
