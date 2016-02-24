@@ -8,10 +8,35 @@
   -webkit-border-radius: 5px; 
 }
 
-#application{
-  width:1000px;
+/*#application{
+  width:90%;
   margin: 0px auto;
   min-height:100%;
+}*/
+#application {
+  margin-right: auto;
+  margin-left: auto;
+  min-height:100%;
+}
+@media (min-width: 768px) {
+  #application {
+    width: 750px;
+  }
+}
+@media (min-width: 992px) {
+  #application {
+    width: 970px;
+  }
+}
+@media (min-width: 1200px) {
+  #application {
+    width: 1170px;
+  }
+}
+@media (min-width: 1200px) {
+  #application {
+    width: 1300px;
+  }
 }
 
 html, body{
@@ -76,7 +101,8 @@ background-color:#91C0DD;
 
   #map-frame{
     height:490px;
-    width:695px;
+    width:64%;
+    /*min-width:695px;*/
     margin-right:295px;
     background-color:#DDD;
   }
@@ -86,13 +112,15 @@ background-color:#91C0DD;
   }
     #map{
       height:490px;
-      width:695px;
+      /*width:100%;*/
+      /*min-width:695px;*/
     }
 
   #sidebar{
-    width:290px;
-    height:200px;
-	float:right;
+    width:35%;
+    /*min-width:290px;*/
+    height:490px;
+	 float:right;
     font-size:80%;
   }
 
@@ -205,4 +233,5 @@ h4{
 #legend{
 font-size:90%;
 padding:8px;
-}	  
+}	 
+

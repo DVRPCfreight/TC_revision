@@ -53,14 +53,20 @@ function getWhereClause(classname) {
                         else whereclause += ')';
                     } else {
                         var dir = (i == 0) ? " >= " : " <= ";
-                        var todate = (i == 0) ?
-                            "to_date('01/01/" + value + "', 'MM/DD/YYYY')" : "to_date('12/31/" + value + "', 'MM/DD/YYYY')";
+                        
+                        //scrap this and use SETYEAR
+                        // requires update of index.htm id element to be SETYEAR 
 
-                        if (type == "date") {
-                            whereclause += " and " + fieldname + dir + todate;
-                        } else {
-                            whereclause += " and " + fieldname + dir + value;
-                        }
+                        // var todate = (i == 0) ?
+                        //     "to_date('01/01/" + value + "', 'MM/DD/YYYY')" : "to_date('12/31/" + value + "', 'MM/DD/YYYY')";
+
+                        // if (type == "date") {
+                        //     whereclause += " and " + fieldname + dir + todate;
+                        // } else {
+                          // whereclause += " and " + fieldname + dir + value;
+                        // }
+                        whereclause += " and " + fieldname + dir + value;
+                        
                     }
                 }
             });
@@ -163,15 +169,12 @@ function frmDate(v) {
         return "";
     }
 }
-//assign color values
-getColor = {
-  'Volume':'#FF00C5',
-  '15 min Volume':'#FFFF33',
-  'Class': '#99E600',
-  'Manual Class': '#C500FF',
-  'Turning Movement': '#00C5FF',
-  'Loop':'#E64C00',
-  '8 Day': '#00E6A9'
+
+//sentence case for roads and direction
+function capitalize(s) {
+    return s.toLowerCase().replace(/\b./g, function(a) {
+        return a.toUpperCase();
+    });
 }
 
 $(document).ready(function() {
@@ -308,28 +311,32 @@ $(document).ready(function() {
     }, {
         name: 'ROUTE',
         index: 'ROUTE',
-        width: 110,
+        width: 60,
         label: "Route #"
     }, {
         name: 'ROAD',
         index: 'ROAD',
         width: 115,
-        label: "Road"
+        label: "Road",
+        formatter: capitalize
     }, {
         name: 'CNTDIR',
         index: 'CNTDIR',
         width: 90,
-        label: "Count Direction"
+        label: "Count Direction",
+        formatter: capitalize
     }, {
         name: 'FROMLMT',
         index: 'FROMLMT',
         width: 120,
-        label: "From"
+        label: "From",
+        formatter: capitalize
     }, {
         name: 'TOLMT',
         index: 'TOLMT',
         width: 120,
-        label: "To"
+        label: "To",
+        formatter: capitalize
     }];
 
     //   var colNames =["Road", "Date of Count", "DVRPC File #", "AADT", "Count Direction", "From", "To", "MCD", "County"];
@@ -459,80 +466,6 @@ function init() {
     map.addLayer(counts);
     // counts.setVisibleLayers([2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17]);
     counts.setVisibleLayers([0]);
-
-    // var countsUrl = "http://arcgis.dvrpc.org/arcgis/rest/services/Transportation/TrafficCounts/MapServer/";
-    // counts = new esri.layers.ArcGISDynamicMapServiceLayer("http://arcgis.dvrpc.org/arcgis/rest/services/Transportation/TrafficCounts/MapServer/", {
-    //   "id": "counts",
-    //   "opacity": 1
-    // });
-    // counts.setVisibleLayers([0]);
-
-    // var defaultOutline = {"color": new dojo.Color([255,255,255]),"width": 1 ,"type": 'esriSLS',
-    //   "style":'esriSLSSolid'};
-    // // esri.config.defaults.proxyURL = "http://arcgis.dvrpc.org/arcgis/proxy.ashx"
-    // var defaultSymbol = new esri.symbol.SimpleFillSymbol({
-    //   "color" : new dojo.Color([155, 0, 196]),
-    //   "outline": defaultOutline,
-    //   "type": 'esriSLS',
-    //   "style":'esriSLSSolid' 
-    //   } );
-    // var symbolsss = {
-    //   'type': 'simple',
-    //   'symbol': {
-    //     "size": 6,
-    //     "xoffset":0,
-    //     "yoffset":0,
-    //     "type": 'esriSMS',
-    //     "style": 'esriSMSCircle',
-    //     "color" : new dojo.Color([255, 255, 51]),
-    //     "outline": defaultOutline,
-    //   }
-    // };
-    // .setStyle(esri.symbol.SimpleFillSymbol.STYLE_SOLID);
-    //     defaultSymbol.setOutline(new esri.symbol.SimpleLineSymbol(esri.symbol.SimpleLineSymbol.STYLE_SOLID, new dojo.Color([255,0,0]), 2));
-
-    // var renderer = new esri.renderer.SimpleRenderer(symbolsss);
-
-    // var renderer = new esri.renderer.UniqueValueRenderer(symbolsss, "TYPE")
-    
-    //add symbol for each possible value
-    // renderer.addValue("Volume", new esri.symbol.SimpleFillSymbol().setColor(new dojo.Color([155, 0, 196])));
-    // {
-    //   "color" : new dojo.Color([155, 0, 196]),
-    //   "outline": defaultOutline 
-    //   } ));
-    // renderer.addValue("15 Min Volume", new esri.symbol.SimpleFillSymbol({
-    //   "color" : new dojo.Color([255, 255, 51]),
-    //   "outline": defaultOutline
-    //   } ));
-    // renderer.addValue("Class", new esri.symbol.SimpleFillSymbol({
-    //   "color" : new dojo.Color([153, 230, 0]),
-    //   "outline": defaultOutline 
-    //   } ));
-    // renderer.addValue("Manual Class", new esri.symbol.SimpleFillSymbol({
-    //   "color" : new dojo.Color([197, 0, 255]),
-    //   "outline": defaultOutline 
-    //   } ));
-    // renderer.addValue("Turning Movement", new esri.symbol.SimpleFillSymbol({
-    //   "color" : new dojo.Color([0, 197, 255]),
-    //   "outline": defaultOutline 
-    //   } ));
-    // renderer.addValue("Loop", new esri.symbol.SimpleFillSymbol({
-    //   "color" : new dojo.Color([230, 76, 0]),
-    //   "outline": defaultOutline 
-    //   } ));
-    // renderer.addValue("8 Day", new esri.symbol.SimpleFillSymbol({
-    //   "color" : new dojo.Color([0, 230, 169]),
-    //   "outline": defaultOutline 
-    //   } ));
-
-    // var optionsArray = [];
-    // var drawingOptions = new esri.layers.LayerDrawingOptions();
-    // drawingOptions.renderer = renderer;
-    // optionsArray[0] = drawingOptions;
-    // counts.setLayerDrawingOptions(optionsArray);
-    // map.addLayer(counts);
-
 
     dojo.connect(counts, "onError", function(error) {
         alert("There was an issue loading the traffic counts, please refresh webpage thank you!");
